@@ -12,7 +12,10 @@
 #define SPC_LT3 LT(3,KC_SPC)          // Space on press, layer 3 on hold
 #define ENT_ALT MT(MOD_LALT,KC_ENT)   // Enter on press, Left Alt on hold
 #define SFT_CAP TD(SHIFT_CAPS)        // Caps on double press, shift on hold
-
+#define PRTSCR  KC_PSCREEN            // Print Screen
+#define OSM_CTL OSM(MOD_LCTL)         // One shot LCTR
+#define OSM_GUI OSM(MOD_LGUI)         // One shot LGUI
+#define OSM_ALT OSM(MOD_LALT)         // One shot LALT
 enum custom_keycodes {
   COLEMAK = SAFE_RANGE,
   QWERTY,
@@ -59,6 +62,7 @@ enum {
 // Tap Dance definitions
 qk_tap_dance_action_t tap_dance_actions[] = {
     // Tap once for Shift, twice for Caps Lock
+    // TODO: change this to tap once for oneshot shift, quad tap for caps
     [SHIFT_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_CAPS),
 };
 
@@ -75,14 +79,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //       ├───────┼───────┼───────┼───────┼───────┼───────┼───────┐       ┌───────┼───────┼───────┼───────┼───────┼───────┼───────┤
   //       │ Ctrl  │   z   │   x   │   c   │   d   │   v   │  Del  │       │ PrtSc │   k   │   h   │   ,   │   .   │   /   │LAltEnt│
   //       └───────┴───────┴───────┴───┬───┴───┬───┴───┬───┴───┬───┘       └───┬───┴───┬───┴───┬───┴───┬───┴───────┴───────┴───────┘
-  //                                   │  Gui  │Numbers│ Bkspc │               │ Space │ Shift │       │     
+  //                                   │  Gui  │Numbers│ Bkspc │               │ Space │ Shift │  Alt  │     
   //                                   └───────┴───────┴───────┘               └───────┴───────┴───────┘        
 
         _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                           KC_6,    KC_7,    KC_8,    KC_9,    KC_0,     DF(1),
         KC_ESC,  KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,                           KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, _______,
         KC_TAB,  KC_A,    KC_R,    KC_S,    KC_T,    KC_G,                           KC_M,    KC_N,    KC_E,    KC_I,    KC_O,    KC_QUOT,
-        KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,  KC_DEL,      KC_PSCREEN, KC_K,    KC_H,    KC_COMM, KC_DOT,  KC_SLSH, ENT_ALT,
-                                            KC_LGUI, TT(2), KC_BSPC,        SPC_LT3, SFT_CAP, _______
+        OSM_CTL, KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,  KC_DEL,          PRTSCR, KC_K,    KC_H,    KC_COMM, KC_DOT,  KC_SLSH, ENT_ALT,
+                                            OSM_GUI, OSL(2),KC_BSPC,        SPC_LT3, SFT_CAP, OSM_ALT
   ),
 
   [_QWERTY] = LAYOUT(
@@ -95,8 +99,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //       ├───────┼───────┼───────┼───────┼───────┼───────┼───────┐       ┌───────┼───────┼───────┼───────┼───────┼───────┼───────┤
   //       │▼Ctrl  │   z   │   x   │   c   │   v   │   b   │▼ Del  │       │▼PrtSc │   n   │   m   │   ,   │   .   │   /   │▼AltEnt│
   //       └───────┴───────┴───────┴───┬───┴───┬───┴───┬───┴───┬───┘       └───┬───┴───┬───┴───┬───┴───┬───┴───────┴───────┴───────┘
-  //                                   │▼ Gui  │▼Numbrs│▼Bkspc │               │▼Space │▼SftCap│▼      │      made with love
-  //                                   └───────┴───────┴───────┘               └───────┴───────┴───────┘         ratsplus
+  //                                   │▼ Gui  │▼Numbrs│▼Bkspc │               │▼Space │▼SftCap│▼ Alt  │
+  //                                   └───────┴───────┴───────┘               └───────┴───────┴───────┘
 
      _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                               KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    DF(0), 
      _______, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                               KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    _______,
@@ -113,15 +117,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //       ├───────┼───────┼───────┼───────┼───────┼───────┤                       ├───────┼───────┼───────┼───────┼───────┼───────┤
   //       │▼ Tab  │   1   │   2   │   3   │   4   │   5   │                       │   6   │   7   │   8   │   9   │   0   │       │
   //       ├───────┼───────┼───────┼───────┼───────┼───────┼───────┐       ┌───────┼───────┼───────┼───────┼───────┼───────┼───────┤
-  //       │▼Ctrl  │       │       │       │       │   `   │▼ Del  │       │▼PrtSc │   \   │   *   │       │       │       │▼AltEnt│
+  //       │  Alt  │       │       │       │       │   `   │▼ Del  │       │▼PrtSc │   \   │   *   │       │       │       │▼AltEnt│
   //       └───────┴───────┴───────┴───┬───┴───┬───┴───┬───┴───┬───┘       └───┬───┴───┬───┴───┬───┴───┬───┴───────┴───────┴───────┘
-  //                                   │▼ Gui  │▼Numbrs│▼Bkspc │               │▼Space │▼SftCap│       │      made with love
-  //                                   └───────┴───────┴───────┘               └───────┴───────┴───────┘         ratsplus
+  //                                   │▼ Gui  │▼Numbrs│▼Bkspc │               │▼Space │▼SftCap│       │
+  //                                   └───────┴───────┴───────┘               └───────┴───────┴───────┘
 
      KC_F12,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                              KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
      _______, KC_NO,   KC_NO,   KC_LCBR, KC_RCBR, KC_MINS,                            KC_EQL,  KC_LBRC, KC_RBRC, KC_NO,   KC_NO,   KC_NO,    
      _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                               KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_NO,
-     _______, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_GRV,  _______,          _______, KC_BSLS, KC_ASTR, KC_NO,   KC_NO,   KC_NO,   _______,
+     OSM_ALT, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_GRV,  _______,          _______, KC_BSLS, KC_ASTR, KC_NO,   KC_NO,   KC_NO,   _______,
                                          _______, _______, _______,          _______, _______, KC_NO
   ),
 
@@ -135,8 +139,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //       ├───────┼───────┼───────┼───────┼───────┼───────┼───────┐       ┌───────┼───────┼───────┼───────┼───────┼───────┼───────┤
   //       │       │       │       │       │       │       │       │       │ PrtSc │       │       │       │       │       │       │
   //       └───────┴───────┴───────┴───┬───┴───┬───┴───┬───┴───┬───┘       └───┬───┴───┬───┴───┬───┴───┬───┴───────┴───────┴───────┘
-  //                                   │       │▼Numbrs│       │               │▼Space │▼SftCap│       │      made with love
-  //                                   └───────┴───────┴───────┘               └───────┴───────┴───────┘         ratsplus
+  //                                   │       │▼Numbrs│       │               │▼Space │▼SftCap│       │
+  //                                   └───────┴───────┴───────┘               └───────┴───────┴───────┘
 
 
      KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   RESET,                              EEP_RST, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_ASRP,   

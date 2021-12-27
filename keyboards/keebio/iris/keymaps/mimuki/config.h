@@ -24,6 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define RGBLIGHT_LAYERS
 // https://docs.qmk.fm/#/tap_hold?id=ignore-mod-tap-interrupt
 #define IGNORE_MOD_TAP_INTERRUPT
+#define ONESHOT_TIMEOUT 1000
 #define TAPPING_TERM 175
 #define TAPPING_TOGGLE 4
 #define NO_AUTO_SHIFT_ALPHA
