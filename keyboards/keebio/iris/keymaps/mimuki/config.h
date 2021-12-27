@@ -22,6 +22,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define RGBLIGHT_DEFAULT_VAL 0
 #define RGBLED_SPLIT { 6, 6 }
 #define RGBLIGHT_LAYERS
+#undef RGBLIGHT_ANIMATIONS
+
 // https://docs.qmk.fm/#/tap_hold?id=ignore-mod-tap-interrupt
 #define IGNORE_MOD_TAP_INTERRUPT
 #define ONESHOT_TIMEOUT 1000

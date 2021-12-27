@@ -4,10 +4,13 @@
 #define _QWERTY 1
 #define _LOWER 2
 #define _RAISE 3
-// Layer RGB
+// Layer RGB (255 is max)
 #define HSV_QWERTY 14, 255, 50
 #define HSV_LOWER 11, 176, 50
 #define HSV_RAISE 30, 218, 50
+#define HSV_SDPINK 240, 255, 50
+#define HSV_SDPURPLE 200, 255, 50
+#define HSV_SDBLUE 130, 255, 50
 // Shorthand, for longer key names that break my delicate, beautiful grid
 #define SPC_LT3 LT(3,KC_SPC)          // Space on press, layer 3 on hold
 #define ENT_ALT MT(MOD_LALT,KC_ENT)   // Enter on press, Left Alt on hold
@@ -23,37 +26,6 @@ enum custom_keycodes {
   RAISE,
 };
 
-// Light LEDs closest to you when caps lock is active
-const rgblight_segment_t PROGMEM my_capslock_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {3, 0, HSV_RED},      // Light 4 LEDs, starting with LED 6
-    {3, 6, HSV_RED}       // Light 4 LEDs, starting with LED 12
-);
-// Light LEDs  when keyboard layer 1 is active
-const rgblight_segment_t PROGMEM my_layer1_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0, 12, HSV_QWERTY}
-);
-// Light LEDs  when keyboard layer 2 is active
-const rgblight_segment_t PROGMEM my_layer2_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0, 12, HSV_LOWER}
-);
-// Light LEDs  when keyboard layer 3 is active
-const rgblight_segment_t PROGMEM my_layer3_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0, 12, HSV_RAISE}
-);
-
-const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
-    my_capslock_layer,
-    my_layer1_layer,    // Overrides caps lock layer
-    my_layer2_layer,    // Overrides other layers
-    my_layer3_layer     // Overrides other layers
-);
-
-void keyboard_post_init_user(void) {
-    // Enable the LED layers
-    rgblight_layers = my_rgb_layers;
-};
-
-
 // Tap Dance declarations
 enum {
     SHIFT_CAPS,
@@ -63,7 +35,55 @@ enum {
 qk_tap_dance_action_t tap_dance_actions[] = {
     // Tap once for Shift, twice for Caps Lock
     // TODO: change this to tap once for oneshot shift, quad tap for caps
-    [SHIFT_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_CAPS),
+   [SHIFT_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_CAPS),
+};
+
+// KAT Space Dust pattern, for colemak layer
+const rgblight_segment_t PROGMEM colemak_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+   // Left half, rotating from top right to bottom right counterclockwise.
+    {0, 1, HSV_SDPURPLE}, //
+    {1, 3, HSV_SDPINK},
+    {4, 1, HSV_SDPURPLE},
+    {5, 1, HSV_SDBLUE}, 
+   // Right half, rotating from bottom left to top left counterclockwise. 
+    {6, 6, HSV_SDBLUE}
+    );
+
+// KAT Space Dust pattern (inverted), for qwerty layer
+const rgblight_segment_t PROGMEM qwerty_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 1, HSV_SDPURPLE},
+    {1, 3, HSV_SDBLUE},
+    {4, 1, HSV_SDPURPLE},
+    {5, 1, HSV_SDPINK},
+    {6, 6, HSV_SDPINK}
+);
+// Caps lock indicator
+const rgblight_segment_t PROGMEM capslock_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {2, 3, HSV_SDPURPLE},
+    {6, 3, HSV_SDPURPLE}
+);
+
+// Lower layer indicator
+const rgblight_segment_t PROGMEM lower_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 12, HSV_SDBLUE}
+);
+// Raise layer indicator
+const rgblight_segment_t PROGMEM raise_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 12, HSV_SDPINK}
+);
+
+// Now define the array of layers. Later layers take precedence
+const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
+    qwerty_layer,    // Overrides caps lock layer
+    colemak_layer,    // Overrides other layers
+    capslock_layer,
+    lower_layer,     // Overrides other layers
+    raise_layer
+);
+
+void keyboard_post_init_user(void) {
+    // Enable the LED layers
+    rgblight_layers = my_rgb_layers;
 };
 
 
@@ -133,9 +153,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //       ┌───────┬───────┬───────┬───────┬───────┬───────┐                       ┌───────┬───────┬───────┬───────┬───────┬───────┐
   //       │       │       │       │       │       │ RESET │                       │EEP RST│       │       │       │       │ AS RP │ (Report autoshift speed)
   //       ├───────┼───────┼───────┼───────┼───────┼───────┤                       ├───────┼───────┼───────┼───────┼───────┼───────┤
-  //       │  RGB  │       │ +HUE  │ +SAT  │ +BRT  │ ASTog │                       │       │       │       │       │       │ AS UP │
+  //       │  RGB  │Effect+│ +HUE  │ +SAT  │ +BRT  │ Mode+ │ (RGB mode)            │       │  End  │ PG DN │ PG UP │ Home  │ AS UP │
   //       ├───────┼───────┼───────┼───────┼───────┼───────┤                       ├───────┼───────┼───────┼───────┼───────┼───────┤
-  //       │       │       │ -HUE  │ -SAT  │ -BRT  │       │                       │       │   ←   │   ↓   │   ↑   │   →   │ AS DN │
+  //       │RGBMOD+│Effect-│ -HUE  │ -SAT  │ -BRT  │ Mode- │                       │       │   ←   │   ↓   │   ↑   │   →   │ AS DN │
   //       ├───────┼───────┼───────┼───────┼───────┼───────┼───────┐       ┌───────┼───────┼───────┼───────┼───────┼───────┼───────┤
   //       │       │       │       │       │       │       │       │       │ PrtSc │       │       │       │       │       │       │
   //       └───────┴───────┴───────┴───┬───┴───┬───┴───┬───┴───┬───┘       └───┬───┴───┬───┴───┬───┴───┬───┴───────┴───────┴───────┘
@@ -144,65 +164,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
      KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   RESET,                              EEP_RST, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_ASRP,   
-     RGB_TOG, KC_NO,   RGB_HUI, RGB_SAI, RGB_VAI, KC_ASTG,                            KC_PGUP, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_ASUP,   
-     KC_NO,   KC_NO,   RGB_HUD, RGB_SAD, RGB_VAD, KC_NO,                              KC_PGDN, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_ASDN,   
+     RGB_TOG, RGB_SPI, RGB_HUI, RGB_SAI, RGB_VAI, RGB_MOD,                            KC_NO,   KC_END,  KC_PGDN, KC_PGUP, KC_HOME, KC_ASUP,   
+     KC_NO,   RGB_SPD, RGB_HUD, RGB_SAD, RGB_VAD, RGB_RMOD,                           KC_NO,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_ASDN,   
      KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,            KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   
                                          KC_NO,   _______, KC_NO,            _______, _______, KC_NO   
   )
 };
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  switch (keycode) {
-    case COLEMAK:
-      if (record->event.pressed) {
-        set_single_persistent_default_layer(_COLEMAK);
-      }
-      return false;
-      break;
-    case QWERTY:
-      if (record->event.pressed) {
-        layer_on(_QWERTY);
-        update_tri_layer(_QWERTY, _LOWER, _RAISE);
-      } else {
-        layer_off(_QWERTY);
-        update_tri_layer(_QWERTY, _LOWER, _RAISE);
-      }
-      return false;
-      break;
-    case LOWER:
-      if (record->event.pressed) {
-        layer_on(_LOWER);
-        update_tri_layer(_QWERTY, _LOWER, _RAISE);
-      } else {
-        layer_off(_LOWER);
-        update_tri_layer(_QWERTY, _LOWER, _RAISE);
-      }
-      return false;
-      break;
-    case RAISE:
-      if (record->event.pressed) {
-        layer_on(_RAISE);
-      } else {
-        layer_off(_RAISE);
-      }
-      return false;
-    break;
-  }
-  return true;
-};
 
 bool led_update_user(led_t led_state) {
-    rgblight_set_layer_state(0, led_state.caps_lock);
+    rgblight_set_layer_state(2, led_state.caps_lock);
     return true;
 }
 
 layer_state_t default_layer_state_set_user(layer_state_t state) {
-    rgblight_set_layer_state(1, layer_state_cmp(state, _QWERTY));
+    rgblight_set_layer_state(0, layer_state_cmp(state, _QWERTY));
+    rgblight_set_layer_state(1, layer_state_cmp(state, _COLEMAK));
     return state;
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    rgblight_set_layer_state(2, layer_state_cmp(state, _LOWER));
+//    rgblight_set_layer_state(2, layer_state_cmp(state, _QWERTY));
+    rgblight_set_layer_state(4, layer_state_cmp(state, _LOWER));
     rgblight_set_layer_state(3, layer_state_cmp(state, _RAISE));
     return state;
 }
