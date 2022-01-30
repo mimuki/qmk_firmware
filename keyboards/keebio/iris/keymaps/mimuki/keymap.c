@@ -4,7 +4,7 @@
 #define _QWERTY 1
 #define _LOWER 2
 #define _RAISE 3
-// Layer RGB (255 is max)
+// Layer colours, in HSV (255 is max)
 #define HSV_QWERTY 14, 255, 50
 #define HSV_LOWER 11, 176, 50
 #define HSV_RAISE 30, 218, 50
@@ -91,39 +91,39 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_COLEMAK] = LAYOUT(
   //       ┌───────┬───────┬───────┬───────┬───────┬───────┐                       ┌───────┬───────┬───────┬───────┬───────┬───────┐
-  //       │       │   1   │   2   │   3   │   4   │   5   │                       │   6   │   7   │   8   │   9   │   0   │ Gaming│
+  //       │ PB 01 │ PB 02 │ PB 03 │ PB 04 │ PB 05 │ PB 06 │                       │ PB 07 │ PB 08 │ PB 09 │ PB 10 │ PB 11 │ PB 12 │
   //       ├───────┼───────┼───────┼───────┼───────┼───────┤                       ├───────┼───────┼───────┼───────┼───────┼───────┤
-  //       │  Esc  │   q   │   w   │   f   │   p   │   b   │                       │   j   │   l   │   u   │   y   │   ;   │       │
+  //       │  Esc  │   q   │   w   │   f   │   p   │   b   │                       │   j   │   l   │   u   │   y   │   ;   │ QWERTY│
   //       ├───────┼───────┼───────┼───────┼───────┼───────┤                       ├───────┼───────┼───────┼───────┼───────┼───────┤
   //       │  Tab  │   a   │   r   │   s   │   t   │   g   │                       │   m   │   n   │   e   │   i   │   o   │   '   │
   //       ├───────┼───────┼───────┼───────┼───────┼───────┼───────┐       ┌───────┼───────┼───────┼───────┼───────┼───────┼───────┤
-  //       │ Ctrl  │   z   │   x   │   c   │   d   │   v   │  Del  │       │ PrtSc │   k   │   h   │   ,   │   .   │   /   │LAltEnt│
+  //       │ Ctrl  │   z   │   x   │   c   │   d   │   v   │  Alt  │       │  Del  │   k   │   h   │   ,   │   .   │   /   │LAltEnt│
   //       └───────┴───────┴───────┴───┬───┴───┬───┴───┬───┴───┬───┘       └───┬───┴───┬───┴───┬───┴───┬───┴───────┴───────┴───────┘
-  //                                   │  Gui  │Numbers│ Bkspc │               │ Space │ Shift │  Alt  │     
+  //                                   │  Gui  │Numbers│  Bksp │               │ Space │ Shift │ PrtSc │     
   //                                   └───────┴───────┴───────┘               └───────┴───────┴───────┘        
 
-        _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                           KC_6,    KC_7,    KC_8,    KC_9,    KC_0,     DF(1),
-        KC_ESC,  KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,                           KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, _______,
+        PB_1,    PB_2,    PB_3,    PB_4,    PB_5,    PB_6,                           PB_7,    PB_8,    PB_9,    PB_10,   PB_11,   PB_12,
+        KC_ESC,  KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,                           KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, DF(1),
         KC_TAB,  KC_A,    KC_R,    KC_S,    KC_T,    KC_G,                           KC_M,    KC_N,    KC_E,    KC_I,    KC_O,    KC_QUOT,
-        OSM_CTL, KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,  KC_DEL,          PRTSCR, KC_K,    KC_H,    KC_COMM, KC_DOT,  KC_SLSH, ENT_ALT,
-                                            OSM_GUI, OSL(2),KC_BSPC,        SPC_LT3, SFT_CAP, OSM_ALT
+        OSM_CTL, KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,  OSM_ALT,         KC_DEL, KC_K,    KC_H,    KC_COMM, KC_DOT,  KC_SLSH, ENT_ALT,
+                                            OSM_GUI, OSL(2),KC_BSPC,        SPC_LT3, SFT_CAP, PRTSCR
   ),
 
   [_QWERTY] = LAYOUT(
   //       ┌───────┬───────┬───────┬───────┬───────┬───────┐                       ┌───────┬───────┬───────┬───────┬───────┬───────┐
-  //       │▼      │   1   │   2   │   3   │   4   │   5   │                       │   6   │   7   │   8   │   9   │   0   │ COLMK │
+  //       │▼PB 01 │▼PB 02 │▼PB 03 │▼PB 04 │▼PB 05 │▼PB 06 │                       │▼PB 07 │▼PB 08 │▼PB 09 │▼PB 10 │▼PB 11 │▼PB 12 │
   //       ├───────┼───────┼───────┼───────┼───────┼───────┤                       ├───────┼───────┼───────┼───────┼───────┼───────┤
-  //       │▼ Esc  │   q   │   w   │   e   │   r   │   t   │                       │   y   │   u   │   i   │   o   │   p   │▼      │
+  //       │▼ Esc  │   q   │   w   │   e   │   r   │   t   │                       │   y   │   u   │   i   │   o   │   p   │ COLMK │
   //       ├───────┼───────┼───────┼───────┼───────┼───────┤                       ├───────┼───────┼───────┼───────┼───────┼───────┤
   //       │▼ Tab  │   a   │   s   │   d   │   f   │   g   │                       │   h   │   j   │   k   │   l   │   ;   │▼  '   │
   //       ├───────┼───────┼───────┼───────┼───────┼───────┼───────┐       ┌───────┼───────┼───────┼───────┼───────┼───────┼───────┤
-  //       │▼Ctrl  │   z   │   x   │   c   │   v   │   b   │▼ Del  │       │▼PrtSc │   n   │   m   │   ,   │   .   │   /   │▼AltEnt│
+  //       │▼Ctrl  │   z   │   x   │   c   │   v   │   b   │▼ Alt  │       │▼ Del  │   n   │   m   │   ,   │   .   │   /   │▼AltEnt│
   //       └───────┴───────┴───────┴───┬───┴───┬───┴───┬───┴───┬───┘       └───┬───┴───┬───┴───┬───┴───┬───┴───────┴───────┴───────┘
-  //                                   │▼ Gui  │▼Numbrs│▼Bkspc │               │▼Space │▼SftCap│▼ Alt  │
+  //                                   │▼ Gui  │▼Numbrs│▼ Bksp │               │▼Space │▼Shift │▼PrtSc │
   //                                   └───────┴───────┴───────┘               └───────┴───────┴───────┘
 
-     _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                               KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    DF(0), 
-     _______, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                               KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    _______,
+     _______, _______, _______, _______, _______, _______,                            _______, _______, _______, _______, _______, _______, 
+     _______, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                               KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    DF(0),
      _______, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                               KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, _______,
      _______, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    _______,          _______, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, _______,
                                          _______, _______, _______,          _______, _______, _______
@@ -137,16 +137,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //       ├───────┼───────┼───────┼───────┼───────┼───────┤                       ├───────┼───────┼───────┼───────┼───────┼───────┤
   //       │▼ Tab  │   1   │   2   │   3   │   4   │   5   │                       │   6   │   7   │   8   │   9   │   0   │       │
   //       ├───────┼───────┼───────┼───────┼───────┼───────┼───────┐       ┌───────┼───────┼───────┼───────┼───────┼───────┼───────┤
-  //       │  Alt  │       │       │       │       │   `   │▼ Del  │       │▼PrtSc │   \   │   *   │       │       │       │▼AltEnt│
+  //       │  Alt  │       │       │       │       │   `   │▼ Del  │       │▼ Del  │   \   │   *   │       │       │       │▼AltEnt│
   //       └───────┴───────┴───────┴───┬───┴───┬───┴───┬───┴───┬───┘       └───┬───┴───┬───┴───┬───┴───┬───┴───────┴───────┴───────┘
-  //                                   │▼ Gui  │▼Numbrs│▼Bkspc │               │▼Space │▼SftCap│       │
+  //                                   │▼ Gui  │▼Numbrs│▼ Bksp │               │▼Space │▼Shift │▼PrtSc │
   //                                   └───────┴───────┴───────┘               └───────┴───────┴───────┘
 
      KC_F12,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                              KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
      _______, KC_NO,   KC_NO,   KC_LCBR, KC_RCBR, KC_MINS,                            KC_EQL,  KC_LBRC, KC_RBRC, KC_NO,   KC_NO,   KC_NO,    
      _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                               KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_NO,
      OSM_ALT, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_GRV,  _______,          _______, KC_BSLS, KC_ASTR, KC_NO,   KC_NO,   KC_NO,   _______,
-                                         _______, _______, _______,          _______, _______, KC_NO
+                                         _______, _______, _______,          _______, _______, _______
   ),
 
   [_RAISE] = LAYOUT(
@@ -157,11 +157,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //       ├───────┼───────┼───────┼───────┼───────┼───────┤                       ├───────┼───────┼───────┼───────┼───────┼───────┤
   //       │RGBMOD+│Effect-│ -HUE  │ -SAT  │ -BRT  │ Mode- │                       │       │   ←   │   ↓   │   ↑   │   →   │ AS DN │
   //       ├───────┼───────┼───────┼───────┼───────┼───────┼───────┐       ┌───────┼───────┼───────┼───────┼───────┼───────┼───────┤
-  //       │       │       │       │       │       │       │       │       │ PrtSc │       │       │       │       │       │       │
+  //       │       │       │       │       │       │       │       │       │       │       │       │       │       │       │       │
   //       └───────┴───────┴───────┴───┬───┴───┬───┴───┬───┴───┬───┘       └───┬───┴───┬───┴───┬───┴───┬───┴───────┴───────┴───────┘
-  //                                   │       │▼Numbrs│       │               │▼Space │▼SftCap│       │
+  //                                   │       │▼Numbrs│       │               │▼Space │▼Shift │       │
   //                                   └───────┴───────┴───────┘               └───────┴───────┴───────┘
-
+  // TODO: remove left hand colour controls as they don't do anything
+  // 	   or alternatively, make them work somehow
 
      KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   RESET,                              EEP_RST, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_ASRP,   
      RGB_TOG, RGB_SPI, RGB_HUI, RGB_SAI, RGB_VAI, RGB_MOD,                            KC_NO,   KC_END,  KC_PGDN, KC_PGUP, KC_HOME, KC_ASUP,   
